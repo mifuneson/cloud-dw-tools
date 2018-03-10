@@ -20,7 +20,7 @@ As a result, this provides an overall reduction in costs - open source software,
 
 
 
-### Initial Setup of cloud-dw-tools:
+## Initial Setup of cloud-dw-tools:
 1. setup an S3 bucket on your AWS with appropriate security permissions.  
  Since you will be storing connection information including DB passwords and private keys, DO NOT make this bucket publically accessible.
 
@@ -47,7 +47,7 @@ As a result, this provides an overall reduction in costs - open source software,
 	2. Create Credentials -> Service Account Key
 		1. select the custom service account
 		2. select JSON
-	3. *download the credential json file and then upload it to your S3 bucket*  
+	3. download the credential json file and then **upload it to your S3 bucket**  
 	4. Enable the API - https://console.developers.google.com/start/api?id=sheets.googleapis.com
 	5. In the JSON file, look at the client_email - keep that email address for later use
 
@@ -64,9 +64,9 @@ As a result, this provides an overall reduction in costs - open source software,
 This Python 2.7 Lambda function that retrieves a set of SQL instructions in the form of a JSON object in stored in an S3 bucket
 and executes them on your redshift database.  Pair with cloudwatch event triggers to generate scheduled ETL function.
 
-Note: The function will execute all your SQL commands in a transaction and rollback the entire transaction any command fail.
+	**Note**: The function will execute all your SQL commands in a transaction and rollback the entire transaction any command fail.
 
-To use the function: 
+#### Setup instructions:
 1. **Write your ETL routine** as a SQL query that runs against the database
 
 2. **create a JSON file** to encapsulate your ETL routine.  Refer to the sample_etl_query.json file as an example.  
@@ -80,28 +80,21 @@ Your JSON should have the following fields:
 3. **Upload the ETL json** file to your S3 bucket.
 
 4. **Configure the lambda function:**
-
-	a. create a new lambda function in AWS
-
-	b. Function Code:  
+	1. create a new lambda function in AWS
+	2. Function Code:  
 		* select "Python 2.7" Runtime
 		* choose "Upload a file from S3"
 			* S3 Link URL: copy the URL of the execution library in #2 of the initial setup - "https://s3-us-west-1.amazonaws.com/s3_bucket_name/redshift_exec_script.zip"
-
-	c. Handler: "exec_redshift_prod_s3_v3.exec_query"
-
-	d. Environment Variables:  you should have the following environment variables
+	3. Handler: "exec_redshift_prod_s3_v3.exec_query"
+	4. Environment Variables:  you should have the following environment variables
 		**s3_bucket_name** : the name of your AWS s3 bucket
 		**connStringJSON** : the name of the connection string JSON object uploaded to the s3 bucket in the Step #3 of the initial setup
 		**querySpecJSON** : the name of the ETL commands JSON objecti you uploaded to s3 in Step #3 above
-
-	e. Basic Settings:
+	5. Basic Settings:
 			set Memory to at least 512 MB.  1GB or higher is recommended
 			set Timeout to at least 2 mins. 3-4mins is recommended to larger ETL commands
-
-	f. Execution Role: whatever execution role your AWS admin is configured.
-
-	g. Network: please refer to your AWS admin for approriate VPC,Subnets and Security Groups (if needed) config settings to access your dataabase server
+	6. Execution Role: whatever execution role your AWS admin is configured.
+	7. Network: please refer to your AWS admin for approriate VPC,Subnets and Security Groups (if needed) config settings to access your dataabase server
 
 5. **To Schedule recurring execution of the script**, select appropriate Cloudwatch Event Triggers on Designer card.  
  (You will need to configure such triggers if you have not already done so).
@@ -138,19 +131,19 @@ To enable this function, you will need to set up appropriate permissions on the 
 
 
 3. Configure the Lambda function
-	a. create a new lambda function in AWS
-	b. Function Code:  select "Python 2.7" Runtime and  choose "Upload a file from S3", S3 Link URL: copy the URL of the execution library in #2 of the initial setup, e.g. "https://s3-us-west-1.amazonaws.com/s3_bucket_name/redshift_exec_script.zip"
-	c. Handler: "exec_redshift_prod_s3_v3.read_gsheet"
-	d. Environment Variables:  you should have the following environment variables
-		s3_bucket_name : the name of your AWS s3 bucket
-		connStringJSON : the name of the connection string JSON object uploaded to the s3 bucket in the Step #3 of the initial setup
-		gsheetCredsJSON : the name of the GoogleAPI Key JSON file you uploaded on Step #5c of the initial setup
-		gsheetUpdateSpecsJSON : the filename of the gsheet load specs JSON object configured in Step 2
-	e. Basic Settings:
+	1. create a new lambda function in AWS
+	2. Function Code:  select "Python 2.7" Runtime and  choose "Upload a file from S3", S3 Link URL: copy the URL of the execution library in #2 of the initial setup, e.g. "https://s3-us-west-1.amazonaws.com/s3_bucket_name/redshift_exec_script.zip".
+	3. Handler: "exec_redshift_prod_s3_v3.read_gsheet"
+	4. Environment Variables:  you should have the following environment variables
+		* **s3_bucket_name** : the name of your AWS s3 bucket
+		* **connStringJSON** : the name of the connection string JSON object uploaded to the s3 bucket in the Step #3 of the initial setup
+		* **gsheetCredsJSON** : the name of the GoogleAPI Key JSON file you uploaded on Step #5.3 of the initial setup
+		* **gsheetUpdateSpecsJSON** : the filename of the gsheet load specs JSON object configured in Step #2
+	5. Basic Settings:
 			set Memory to at least 512 MB.  1GB or higher is recommended
 			set Timeout to at least 2 mins. 3-4mins is recommended to larger ETL commands
-	f. Execution Role: whatever execution role your AWS admin is configured.
-	g. Network: please refer to your AWS admin for approriate VPC,Subnets and Security Groups (if needed) config settings to access your dataabase server
+	6. Execution Role: whatever execution role your AWS admin is configured.
+	7. Network: please refer to your AWS admin for approriate VPC,Subnets and Security Groups (if needed) config settings to access your dataabase server
 
 
 ##### NOTES:

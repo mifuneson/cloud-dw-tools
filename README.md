@@ -1,7 +1,7 @@
 # cloud-dw-tools
 Tools to build data pipelines in the cloud for data analysts.
 
-##Purpose:
+## Purpose:
 The goal for this project is to give data analysts a low cost abilty to build and produce reliable low-medium volume data pipelines themselves and not need to turn to data engineers for the task, thus speeding up their overall productivity and lowering costs
 
 This is done by reducing the task of setting up data pipelines into: 
@@ -20,7 +20,7 @@ As a result, this provides an overall reduction in costs - open source software,
 
 
 
-###Initial Setup of cloud-dw-tools:
+### Initial Setup of cloud-dw-tools:
 1. setup an S3 bucket on your AWS with appropriate security permissions.  
  Since you will be storing connection information including DB passwords and private keys, DO NOT make this bucket publically accessible.
 
@@ -61,7 +61,7 @@ Note: If your google account is centrally managed, you may need for your Google 
 
 **Documentation on Functions:**
 
-##exec_query()
+## exec_query()
 
 This Python 2.7 Lambda function that retrieves a set of SQL instructions in the form of a JSON object in stored in an S3 bucket
 and executes them on your redshift database.  Pair with cloudwatch event triggers to generate scheduled ETL function.
@@ -103,13 +103,13 @@ Your JSON should have the following fields:
  (you will need to define a test event if testing for the first time.  The default test event is fine)
 
 
-##read_gsheet()
+## read_gsheet()
 This function load the contents of a google sheet range into a database table on AWS Redshift
 This function destructive overwrites and reloads the entire contents of the specficied database table
 
 To enable this function, you will need to set up appropriate permissions on the google sheet and load the google sheet credentials into a specified file in an AWS S3 bucket
 
-####Setup instructions:
+#### Setup instructions:
 1. on the Google sheet, give view permissions to the email address specified in the JSON API key file on Step 5e of the initial setup;
 	go to the sheet -> share ->enter that email address
 
@@ -146,7 +146,7 @@ To enable this function, you will need to set up appropriate permissions on the 
 	g. Network: please refer to your AWS admin for approriate VPC,Subnets and Security Groups (if needed) config settings to access your dataabase server
 
 
-#####NOTES:
+##### NOTES:
 -the first row in the google sheet range will be interpreted as the column names
 -all data will be imported as text fields so you will may to do additional type conversions on your SQL queries
 

@@ -1,0 +1,6 @@
+{
+	"src_gsheet_ID":"1DZolOEOtxM3LkCdNsafruJhS7xSdIKH_l4mjLHzTIxy",
+	"src_gsheet_range":"Sheet1!A:C",
+	"tgt_db_schema":"gsheet_load",
+	"tgt_table":"gsheet_table1"
+}

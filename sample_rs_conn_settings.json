@@ -1,0 +1,7 @@
+{
+	"host":"my_rs_server_name.us-west-1.redshift.amazonaws.com",
+	"dbname":"artifacts",
+	"port":"5439",
+	"user":"indiana_jones",
+	"password":"last_crusade"
+}

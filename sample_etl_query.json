@@ -1,0 +1,15 @@
+{
+  "query_name" : "<the name of your etl query - like update table>",
+  "query_start_msg" : "<the message you want displayed/logged at the start of your query>",
+  "query_array":[
+  	["drop table if exists datadb.table1;"
+  		, "<message to display/log at start of this sql command e.g. attempting to drop datadb.table1;>"
+  		, "<message to display/log if sql command fails>"
+  	],
+  	["create table datadb.table1 as select *, getdate() as data_refresh_time from datadb.v_view1;"
+  		,"<message to display/log at start of this sql command e.g. attempting to drop datadb.table1;>"
+  		,"<message to display/log if sql command fails>"
+  	]
+  ],
+  "query_complete_msg" : "<message to display/log on successful completion of etl command set e.g. datadb.table1 successfully refreshed>"
+}
